@@ -26,9 +26,9 @@ cc_binary(
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 
 pkg_tar(
-    name = "bin-win",
+	name = "bin-win",
 	extension = "tar.gz",
-    srcs = [":main_win"],
+	srcs = [":main_win"],
 	package_dir = "/example",
-    mode = "0755",
+	mode = "0755",
 )
