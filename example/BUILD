@@ -9,22 +9,19 @@ cc_library(
 
 cc_library(
 	name = "impl",
-	srcs = ["Implementation.cpp"],
-	hdrs = ["Implementation.h"],
-)
-
-cc_library(
-	name = "impl_linux",
-	srcs = ["ImplementationLinux.cpp"],
-	hdrs = ["ImplementationLinux.h"],
-	deps = [":impl"],
-	data = ["//data:linux_config.txt"],
-)
-
-cc_library(
-	name = "impl_win",
-	srcs = ["ImplementationWin.cpp"],
-	hdrs = ["ImplementationWin.h"],
-	deps = [":impl"],
-	data = ["//data:windows_config.txt"],
+	srcs = ["Implementation.cpp"] + select({
+		"@bazel_tools//src/conditions:windows": ["ImplementationWin.cpp"],
+#		"@bazel_tools//src/conditions:darwin": ["ImplementationMacOS.cpp"],
+		"//conditions:default": ["ImplementationLinux.cpp"],
+	}),
+	hdrs = ["Implementation.h"] + select({
+		"@bazel_tools//src/conditions:windows": ["ImplementationWin.h"],
+#		"@bazel_tools//src/conditions:darwin": ["ImplementationMacOS.h"],
+		"//conditions:default": ["ImplementationLinux.h"],
+	}),
+	data = select({
+		"@bazel_tools//src/conditions:windows": ["//data:windows_config.txt"],
+#		"@bazel_tools//src/conditions:darwin": ["//data:MacOS_config.txt"],
+		"//conditions:default": ["//data:linux_config.txt"],
+	}),
 )

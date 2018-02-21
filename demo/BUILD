@@ -7,28 +7,19 @@ cc_library(
 )
 
 cc_binary(
-	name = "main_win",
+	name = "main",
 	deps = [
 		":demo",
-		"//example:impl_win",
-	],
-)
-
-
-cc_binary(
-	name = "main_linux",
-	deps = [
-		":demo",
-		"//example:impl_linux",
+		"//example:impl",
 	],
 )
 
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 
 pkg_tar(
-	name = "bin-win",
+	name = "bin",
 	extension = "tar.gz",
-	srcs = [":main_win"],
+	deps = [":main"],
 	package_dir = "/example",
 	mode = "0755",
 )
